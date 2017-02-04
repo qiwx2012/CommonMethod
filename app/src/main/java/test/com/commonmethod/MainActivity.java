@@ -1,10 +1,12 @@
 package test.com.commonmethod;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.TextView;
 
+import annotation.CustomUtils;
+import annotation.Person;
 import utils.Commons;
 
 public class MainActivity extends AppCompatActivity {
@@ -21,5 +23,6 @@ public class MainActivity extends AppCompatActivity {
         TextView tv=(TextView) findViewById(R.id.txtContent);
         tv.setText(path);
         Log.i("dd",path);
+        CustomUtils.getInfo(Person.class);
     }
 }
