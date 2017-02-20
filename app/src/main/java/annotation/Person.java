@@ -11,7 +11,7 @@ public class Person {
     @Name("小明")
     private String Name;
     @Gender(gender = Gender.GenderType.Male)
-    private String gender;
+    private String abc;
     @Profile(id = 1001, height = 180, nativePlace = "CN")
     private String profile;
 
@@ -24,11 +24,11 @@ public class Person {
     }
 
     public String getGender() {
-        return gender;
+        return abc;
     }
 
     public void setGender(String gender) {
-        this.gender = gender;
+        this.abc = gender;
     }
 
     public String getProfile() {
