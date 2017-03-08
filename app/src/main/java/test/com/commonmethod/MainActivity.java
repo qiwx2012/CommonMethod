@@ -1,9 +1,9 @@
 package test.com.commonmethod;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-import android.widget.TextView;
+import android.view.View;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -16,30 +16,48 @@ import utils.Commons;
 public class MainActivity extends AppCompatActivity {
 
     Commons mCommon;
-
+    String path;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        String path = new Commons(this).getExternalFilesDir("11");
-        mCommon = new Commons(this);
+       /* mCommon=new Commons(this);
+        path = mCommon.getExternalFilesDir("11");
         path = mCommon.getExternalCatchDir();
         path = mCommon.getSdPath();
         TextView tv = (TextView) findViewById(R.id.txtContent);
         tv.setText(path);
-        Log.i("dd", path);
+        Log.i("dd", path);*/
         CustomUtils.getInfo(Person.class);
         CarInfo carInfo = new CarInfo();
         carInfo.setId("");
         carInfo.setPrice(33);
         try {
             AnnotationUtil.checkValue(carInfo);
-           // reflect(carInfo);
+            // reflect(carInfo);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
         new InsertSort().test();
+
+        findViewById(R.id.btn1).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent go = new Intent(MainActivity.this, ObjChangeAct.class);
+                startActivity(go);
+
+            }
+        });
+        findViewById(R.id.btn2).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent go = new Intent(MainActivity.this, DatePickAct.class);
+                startActivity(go);
+
+            }
+        });
+
 
 
     }
