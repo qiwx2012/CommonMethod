@@ -9,7 +9,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-import widget.YearMonthDialog;
+import widget.TimePickerDialog;
 
 /**
  * @author: qiwx
@@ -36,12 +36,27 @@ public class DatePickAct extends Activity {
                 calendar.setTime(date);
                 calendar.add(calendar.MONTH, -5);
                 minDate = calendar.getTime();
-                new YearMonthDialog(DatePickAct.this).showDateDialog("选择时间", maxDate, minDate,false, new YearMonthDialog.OnDateSelectListener() {
+               /* new TimePickerDialog(DatePickAct.this).showDateDialog("选择时间", maxDate, minDate,false, new TimePickerDialog.OnDateSelectListener() {
                     @Override
                     public void onDateSelected(String dateStr) {
                         Toast.makeText(DatePickAct.this,dateStr,Toast.LENGTH_SHORT).show();
                     }
-                });
+                });*/
+                new TimePickerDialog
+                        .Builder(DatePickAct.this)
+                        .setIsShowDay(true)
+                        .setMaxDate(maxDate)
+                        .setminDate(minDate)
+                        .setTitle("选择时间")
+                        .setOnDateSelectListener(new TimePickerDialog.OnDateSelectListener() {
+                            @Override
+                            public void onDateSelected(String dateStr) {
+                                Toast.makeText(DatePickAct.this,dateStr,Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .build().show();
+
+
             }
         });
     }

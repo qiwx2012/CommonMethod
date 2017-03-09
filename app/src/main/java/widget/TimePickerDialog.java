@@ -24,19 +24,11 @@ import test.com.commonmethod.R;
  * @time: 2017/1/10 17:23
  * @desc:
  */
-public class YearMonthDialog {
+public class TimePickerDialog {
 
-    /**
-     * 上牌时间、保险到期日、年检到期日
-     */
-    private int status;
     private Activity mContext;
     private OnDateSelectListener mListener;
-    private String[] years;
-    private int year;
-    private int nowYear = 0;
-    private int nowMonth = 0;
-    private int month;
+
     String title;
     QNumberPicker npYear;
     QNumberPicker npMonth;
@@ -49,22 +41,25 @@ public class YearMonthDialog {
     int scroll2Month;
     Calendar mincalendar;
     Calendar maxcalendar;
-    int maxYear;
-    int minYear;
     String strMaxDate;//字符串
     String strMinDate;
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
     SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
 
 
-    public YearMonthDialog(Activity context) {
-        this.mContext = context;
+    public TimePickerDialog() {
+
     }
 
-    public YearMonthDialog(Activity context, int status) {
-        this.mContext = context;
-        this.status = status;
+    private TimePickerDialog(TimePickerDialog td) {
+        this.maxDate = td.maxDate;
+        this.minDate = td.minDate;
+        this.isShowDay = td.isShowDay;
+        this.title = td.title;
+        this.mContext = td.mContext;
+        this.mListener=td.mListener;
     }
+
 
     /* title 标题
     *  maxDate 最大日期限制
@@ -74,7 +69,7 @@ public class YearMonthDialog {
     *
     * */
     // 对打
-    public void showDateDialog(String title, Date maxDate, Date minDate, OnDateSelectListener listener) {
+   /* public void showDateDialog(String title, Date maxDate, Date minDate, OnDateSelectListener listener) {
 
         showDateDialog(title, maxDate, minDate, true, listener);
     }
@@ -86,10 +81,11 @@ public class YearMonthDialog {
         this.maxDate = maxDate;
         this.minDate = minDate;
         View view = mContext.getLayoutInflater().inflate(R.layout.layout_year_month_picker, null);
-        initView(view, isShowDay);
-    }
+       // initView(view, isShowDay);
+    }*/
 
-    private void initView(View view, boolean isShowDay) {
+    private void initView() {
+        View view = mContext.getLayoutInflater().inflate(R.layout.layout_year_month_picker, null);
         npYear = (QNumberPicker) view.findViewById(R.id.npYear);
         npMonth = (QNumberPicker) view.findViewById(R.id.npMonth);
         npDay = (QNumberPicker) view.findViewById(R.id.npDay);
@@ -270,4 +266,51 @@ public class YearMonthDialog {
         }
         return maxday;
     }
+
+    public void show() {
+        initView();
+
+    }
+
+    public static class Builder {
+        TimePickerDialog target;
+
+        public Builder(Activity context) {
+            target = new TimePickerDialog();
+            target.mContext = context;
+        }
+
+        public Builder setMaxDate(Date maxDate) {
+            target.maxDate = maxDate;
+            return this;
+        }
+
+        public Builder setminDate(Date minDate) {
+            target.minDate = minDate;
+            return this;
+        }
+
+        public Builder setTitle(String title) {
+            target.title = title;
+            return this;
+
+        }
+
+        public Builder setIsShowDay(boolean isShowDay) {
+            target.isShowDay = isShowDay;
+            return this;
+        }
+
+        public Builder setOnDateSelectListener(OnDateSelectListener mListener) {
+            target.mListener = mListener;
+            return this;
+        }
+
+        public TimePickerDialog build() {
+            return new TimePickerDialog(target);
+        }
+
+    }
+
+
 }
