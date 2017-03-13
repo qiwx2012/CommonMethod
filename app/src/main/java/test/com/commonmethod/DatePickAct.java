@@ -7,8 +7,8 @@ import android.widget.Toast;
 
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 
+import utils.Commons;
 import widget.TimePickerDialog;
 
 /**
@@ -28,20 +28,8 @@ public class DatePickAct extends Activity {
             public void onClick(View v) {
                 Date maxDate;
                 Date minDate;
-                Date date = new Date();
-                Calendar calendar = new GregorianCalendar();
-                calendar.setTime(date);
-                calendar.add(calendar.MONTH, 12);//把日期往后增加一天.整数往后推,负数往前移动
-                maxDate = calendar.getTime();   //这个时间就是日期往后推一天的结果
-                calendar.setTime(date);
-                calendar.add(calendar.MONTH, -5);
-                minDate = calendar.getTime();
-               /* new TimePickerDialog(DatePickAct.this).showDateDialog("选择时间", maxDate, minDate,false, new TimePickerDialog.OnDateSelectListener() {
-                    @Override
-                    public void onDateSelected(String dateStr) {
-                        Toast.makeText(DatePickAct.this,dateStr,Toast.LENGTH_SHORT).show();
-                    }
-                });*/
+                maxDate = Commons.getAmountDate(Calendar.DATE, 5);
+                minDate = Commons.getAmountDate(Calendar.DATE, -4);
                 new TimePickerDialog
                         .Builder(DatePickAct.this)
                         .setIsShowDay(true)
@@ -51,7 +39,7 @@ public class DatePickAct extends Activity {
                         .setOnDateSelectListener(new TimePickerDialog.OnDateSelectListener() {
                             @Override
                             public void onDateSelected(String dateStr) {
-                                Toast.makeText(DatePickAct.this,dateStr,Toast.LENGTH_SHORT).show();
+                                Toast.makeText(DatePickAct.this, dateStr, Toast.LENGTH_SHORT).show();
                             }
                         })
                         .build().show();

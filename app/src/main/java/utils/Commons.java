@@ -4,6 +4,9 @@ import android.content.Context;
 import android.os.Environment;
 
 import java.io.File;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 /**
  * Created by qiwx on 2017/1/2.
@@ -44,8 +47,21 @@ public class Commons {
         } else {
             path = "";
         }
-        path = file.getAbsolutePath()+File.separator;
+        path = file.getAbsolutePath() + File.separator;
         return path;
+    }
+   /*选择与与当天相差
+     field 相差域 年月日
+     amount 相差值 正数当天以后，负数当天以前
+   */
+
+    public static Date getAmountDate(int field, int amount) {
+        Date date = new Date();
+        Calendar calendar = new GregorianCalendar();
+        calendar.setTime(date);
+        calendar.add(field, amount);
+        return calendar.getTime();
+
     }
 
 }

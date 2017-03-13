@@ -13,15 +13,15 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import test.com.commonmethod.R;
 
 /**
- * @author: voiceofnet
- * email: pengkun@jingzhengu.com
- * phone:18101032717
- * @time: 2017/1/10 17:23
+ * email: qiwx@jingzhengu.com
+ *
+ * @time: 2017/3/13
  * @desc:
  */
 public class TimePickerDialog {
@@ -37,12 +37,12 @@ public class TimePickerDialog {
     boolean isShowDay = true;//是否显示天,默认显示
     Date maxDate;
     Date minDate;
+    Date selectDate;
     int scroll2Year;
     int scroll2Month;
-    Calendar mincalendar;
-    Calendar maxcalendar;
-    String strMaxDate;//字符串
-    String strMinDate;
+    Calendar minCalendar;
+    Calendar maxCalendar;
+    Calendar selectCalendar;
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
     SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -52,12 +52,38 @@ public class TimePickerDialog {
     }
 
     private TimePickerDialog(TimePickerDialog td) {
-        this.maxDate = td.maxDate;
-        this.minDate = td.minDate;
+        //当前日期
+        Date date = new Date();
+        Calendar calendar = new GregorianCalendar();
+        calendar.setTime(date);
+        //最大日期
+        if (null == td.maxDate) {
+            calendar.add(calendar.YEAR, 100);
+            maxDate = calendar.getTime();
+        } else {
+            this.maxDate = td.maxDate;
+        }
+        //最小日期
+        if (null == td.minDate) {
+            calendar = new GregorianCalendar();
+            calendar.setTime(date);
+            calendar.add(calendar.YEAR, -100);
+            minDate = calendar.getTime();
+        } else {
+            this.minDate = td.minDate;
+        }
+        //默认选择日期
+        if (null == td.selectDate) {
+            calendar = new GregorianCalendar();
+            calendar.setTime(date);
+            selectDate = calendar.getTime();
+        } else {
+            selectDate = td.selectDate;
+        }
         this.isShowDay = td.isShowDay;
         this.title = td.title;
         this.mContext = td.mContext;
-        this.mListener=td.mListener;
+        this.mListener = td.mListener;
     }
 
 
@@ -93,7 +119,6 @@ public class TimePickerDialog {
         npYear.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
         npMonth.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
         npDay.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
-
         npYear.setOnScrollListener(new NumberPicker.OnScrollListener() {
             @Override
             public void onScrollStateChange(NumberPicker view, int scrollState) {
@@ -117,27 +142,28 @@ public class TimePickerDialog {
 
             }
         });
-
-
-        Calendar calendar = Calendar.getInstance();
-        maxcalendar = Calendar.getInstance();
-        mincalendar = Calendar.getInstance();
-
-        maxcalendar.setTime(maxDate);
-        strMaxDate = maxcalendar.get(Calendar.YEAR) + "-" + (maxcalendar.get(Calendar.MONTH) + 1);
-        npYear.setMaxValue(maxcalendar.get(Calendar.YEAR));
-        npMonth.setMaxValue(12);
+        selectCalendar = Calendar.getInstance();
+        maxCalendar = Calendar.getInstance();
+        minCalendar = Calendar.getInstance();
+        //最大日期
+        maxCalendar.setTime(maxDate);
+        npYear.setMaxValue(maxCalendar.get(Calendar.YEAR));
+       /* npMonth.setMaxValue(12);
         npMonth.setMinValue(1);
         npDay.setMaxValue(30);
-        npDay.setMinValue(1);
-
-        mincalendar.setTime(minDate);
-        strMinDate = mincalendar.get(Calendar.YEAR) + "-" + (mincalendar.get(Calendar.MONTH) + 1);
-        npYear.setMinValue(mincalendar.get(Calendar.YEAR));
-        calendar.setTime(new Date());
-        npYear.setValue(calendar.get(Calendar.YEAR));
-        npMonth.setValue(calendar.get(Calendar.MONTH) + 1);
-        npDay.setValue(calendar.get(Calendar.DATE));
+        npDay.setMinValue(1);*/
+        //最小日期
+        minCalendar.setTime(minDate);
+        npYear.setMinValue(minCalendar.get(Calendar.YEAR));
+        //选择日期
+        selectCalendar.setTime(selectDate);
+        scroll2Year = selectCalendar.get(Calendar.YEAR);
+        scroll2Month = selectCalendar.get(Calendar.MONTH) + 1;
+        npYear.setValue(scroll2Year);
+        updateMonth(scroll2Year);
+        npMonth.setValue(scroll2Month);
+        updateDay(scroll2Year, scroll2Month);
+        npDay.setValue(selectCalendar.get(Calendar.DATE));
         //如果isShow为false天不显示
         if (!isShowDay) {
             tvDay.setVisibility(View.GONE);
@@ -156,15 +182,21 @@ public class TimePickerDialog {
     private void updateMonth(int scroll2Year) {
 
         Date date = null;
-        Date MaxDate = null;
-        Date minDate = null;
+        Date max = null;
+        Date min = null;
         try {
-            MaxDate = sdf.parse(strMaxDate);
-            minDate = sdf.parse(strMinDate);
+            max = sdf.parse(maxCalendar.get(Calendar.YEAR) + "-" + (maxCalendar.get(Calendar.MONTH) + 1));
+            min = sdf.parse(minCalendar.get(Calendar.YEAR) + "-" + (maxCalendar.get(Calendar.MONTH) + 1));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        if (null == max || null == min)
+            return;
+        try {
             List<Integer> temp = new ArrayList<>();
             for (int i = 0; i < 12; i++) {
                 date = sdf.parse(scroll2Year + "-" + (i + 1));
-                if (date.after(minDate) && date.before(MaxDate)) {
+                if (date.after(min) && date.before(max)) {
                     temp.add(i);
                 }
             }
@@ -174,6 +206,9 @@ public class TimePickerDialog {
                 npDay.setValue(1);
                 npMonth.setMaxValue(temp.get(temp.size() - 1) + 1);
 
+            } else {
+                npMonth.setMaxValue(maxCalendar.get(Calendar.MONTH) + 1);
+                npMonth.setMinValue(maxCalendar.get(Calendar.MONTH) + 1);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -184,10 +219,10 @@ public class TimePickerDialog {
     private void updateDay(int scroll2Year, int scroll2Month) {
         Date date = null;
         try {
-            int maxDays = getMonthMaxDays(scroll2Year, scroll2Month + 1);
+            int maxDays = getMonthMaxDays(scroll2Year, scroll2Month);
             List<Integer> temp = new ArrayList<>();
             for (int i = 0; i < maxDays; i++) {
-                date = sdf1.parse(scroll2Year + "-" + (scroll2Month + 1) + "-" + (i + 1));
+                date = sdf1.parse(scroll2Year + "-" + (scroll2Month) + "-" + (i + 1));
                 if (date.after(minDate) && date.before(maxDate)) {
                     temp.add(i);
                 }
@@ -196,7 +231,10 @@ public class TimePickerDialog {
                 npDay.setMinValue(temp.get(0) + 1);
                 npDay.setValue(temp.get(0) + 1);
                 npDay.setMaxValue(temp.get(temp.size() - 1) + 1);
-
+            } else {
+                npDay.setMinValue(selectCalendar.get(Calendar.DATE));
+                npDay.setValue(selectCalendar.get(Calendar.DATE));
+                npDay.setMaxValue(selectCalendar.get(Calendar.DATE));
             }
 
         } catch (Exception e) {
