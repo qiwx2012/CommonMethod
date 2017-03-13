@@ -12,6 +12,7 @@ import android.util.Log;
 public class TestGit {
 
     private void test() {
+
         Log.i("dd", "");
     }
 
