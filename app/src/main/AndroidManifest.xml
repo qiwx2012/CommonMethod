@@ -18,6 +18,7 @@
 
         <activity android:name=".ObjChangeAct"></activity>
         <activity android:name=".DatePickAct"></activity>
+        <activity android:name=".ActContainer"></activity>
     </application>
 
 </manifest>

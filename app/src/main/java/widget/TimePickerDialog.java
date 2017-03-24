@@ -20,7 +20,6 @@ import test.com.commonmethod.R;
 
 /**
  * email: qiwx@jingzhengu.com
- *
  * @time: 2017/3/13
  * @desc:
  */
@@ -86,30 +85,6 @@ public class TimePickerDialog {
         this.mListener = td.mListener;
     }
 
-
-    /* title 标题
-    *  maxDate 最大日期限制
-    *  minDate 最小日期限制
-    *  listener 选择监听
-    *
-    *
-    * */
-    // 对打
-   /* public void showDateDialog(String title, Date maxDate, Date minDate, OnDateSelectListener listener) {
-
-        showDateDialog(title, maxDate, minDate, true, listener);
-    }
-
-    public void showDateDialog(String title, Date maxDate, Date minDate, boolean isShowDay, OnDateSelectListener listener) {
-        this.title = title;
-        this.mListener = listener;
-        this.isShowDay = isShowDay;
-        this.maxDate = maxDate;
-        this.minDate = minDate;
-        View view = mContext.getLayoutInflater().inflate(R.layout.layout_year_month_picker, null);
-       // initView(view, isShowDay);
-    }*/
-
     private void initView() {
         View view = mContext.getLayoutInflater().inflate(R.layout.layout_year_month_picker, null);
         npYear = (QNumberPicker) view.findViewById(R.id.npYear);
@@ -148,10 +123,6 @@ public class TimePickerDialog {
         //最大日期
         maxCalendar.setTime(maxDate);
         npYear.setMaxValue(maxCalendar.get(Calendar.YEAR));
-       /* npMonth.setMaxValue(12);
-        npMonth.setMinValue(1);
-        npDay.setMaxValue(30);
-        npDay.setMinValue(1);*/
         //最小日期
         minCalendar.setTime(minDate);
         npYear.setMinValue(minCalendar.get(Calendar.YEAR));
