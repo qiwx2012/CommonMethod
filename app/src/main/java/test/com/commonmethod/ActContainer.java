@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
+import fragment.FrgMuiItem;
 import fragment.FrgRecycleViewDmeo;
 
 /**
@@ -24,7 +25,10 @@ public class ActContainer extends AppCompatActivity {
         setContentView(R.layout.act_container);
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
-        ft.add(R.id.flContent, new FrgRecycleViewDmeo());
+        //
+        //  ft.add(R.id.flContent, new FrgRecycleViewDmeo());
+        //多个item
+        ft.add(R.id.flContent, new FrgMuiItem());
         ft.commitAllowingStateLoss();
     }
 }
