@@ -37,5 +37,15 @@
         android:text="跳转到自定义Fragment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+    <Button
+        android:id="@+id/btn5"
+        android:text="开启一个后台服务IntentService"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <Button
+        android:id="@+id/btn6"
+        android:text="Bind一个服务"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
 </LinearLayout>

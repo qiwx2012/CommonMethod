@@ -3,13 +3,17 @@ package test.com.commonmethod;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatDialog;
 import android.view.View;
+import android.widget.TextView;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 import annotation.CustomUtils;
 import annotation.Person;
+import thread.BindService;
+import thread.LocalIntentServcice;
 import sort.InsertSort;
 import utils.Commons;
 
@@ -17,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
 
     Commons mCommon;
     String path;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,12 +70,35 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+        findViewById(R.id.btn5).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent go = new Intent(MainActivity.this, LocalIntentServcice.class);
+                go.putExtra("task_action", "task1");
+                startService(go);
+                go.putExtra("task_action", "task2");
+                startService(go);
+                go.putExtra("task_action", "task3");
+                startService(go);
 
+            }
+        });
+        findViewById(R.id.btn6).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent go = new Intent(MainActivity.this, ActBindService.class);
+                startActivity(go);
 
+            }
+        });
 
+        AppCompatDialog dialog=new AppCompatDialog(this);
+        TextView tv=new TextView(this);
+        tv.setText("ddfdfd");
+        dialog.setContentView(tv);
+        dialog.show();
 
     }
-
 
     public void reflect(CarInfo e) throws Exception {
         Class cls = e.getClass();

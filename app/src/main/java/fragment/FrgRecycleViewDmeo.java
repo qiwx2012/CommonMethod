@@ -27,6 +27,8 @@ public class FrgRecycleViewDmeo  extends Fragment{
     private RecyclerView recyclerView;
     private ArrayList<MyEntity> myData;
 
+
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

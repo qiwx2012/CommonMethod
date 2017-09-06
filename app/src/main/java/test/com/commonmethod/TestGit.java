@@ -13,6 +13,10 @@ public class TestGit {
 
     private void test() {
 
+        String ss;
+        StringBuffer sbf;
+        StringBuilder sb;
+
         Log.i("dd", "");
     }
 
